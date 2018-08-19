@@ -1,23 +1,63 @@
+import * as wu from "wu";
+
 import IPostService from "./IPostService";
 import Post from "../models/Post";
 import config from "../Config";
+import PostRepository from "../data/PostRepository";
+import ApiPost from "../models/ApiPost";
 
 export default class PostService implements IPostService {
-    allPosts(orderBy, firstPostId: number, postsPerPage: number) {
-        const sortFunction = this.getSortFunction(orderBy);
+    private _postRepo: PostRepository;
+
+    constructor(posts: PostRepository){
+        this._postRepo = posts;
+    }
+
+    allPosts(orderBy: string, firstPostId: number, postsPerPage: number) {
+        const posts = Array.from(this._postRepo.posts());
+
+        return this.getPostSet(posts, orderBy, firstPostId, postsPerPage);
+    }
+
+    postWithId(id: number) {
+        const posts = this._postRepo.posts();
+
+        const post = wu(posts)
+            .find(p => p.id === id);
+
+        return this.mapToApiPost(post);
+    }
+
+    postWithSlug(slug: string) {
+        const posts = this._postRepo.posts();
+        
+        const post = wu(posts)
+            .find(p => p.slug === slug);
+
+        return this.mapToApiPost(post);
+    }
+
+    postsWithTag(tag: string, orderBy: string, firstPostId: number, postsPerPage: number) {
+        const posts = Array.from(this._postRepo.posts())
+            .filter(p => !!p.tags && p.tags.some(t => t.toLowerCase() === tag.toLowerCase()));
+
+        return this.getPostSet(posts, orderBy, firstPostId, postsPerPage);
+    }
+
+    private getPostSet(posts: Post[], orderBy: string, firstPostId: number, postsPerPage: number){
+        const sortedPosts = posts
+            .concat()
+            .sort(this.getSortFunction(orderBy));
+        
         const postsRequired = postsPerPage || config.defaultPostsPerPage;
 
-        const posts = this.getDummyPosts()
-            .concat()
-            .sort(sortFunction);
-
         const start = firstPostId !== null
-            ? posts.findIndex(p => p.id === firstPostId) || 0
+            ? sortedPosts.findIndex(p => p.id === firstPostId) || 0
             : 0;
 
         const end = start + postsRequired;
 
-        let pagedPosts = posts.slice(start, end + 1);
+        let pagedPosts = sortedPosts.slice(start, end + 1);
 
         // if there are more, remove the last and make it the 'next' post
         let next = pagedPosts.length > postsRequired
@@ -25,19 +65,9 @@ export default class PostService implements IPostService {
             : undefined
 
         return {
-            posts: pagedPosts,
+            posts: pagedPosts.map(p => this.mapToApiPost(p)),
             next: next
         }
-    }
-
-    postWithId(id: number): Post {
-        return this.getDummyPosts()
-            .find(p => p.id === id);
-    }
-
-    postWithSlug(slug: string): Post {
-        return this.getDummyPosts()
-            .find(p => p.slug === slug);
     }
 
     private getSortFunction(name: string){
@@ -53,26 +83,18 @@ export default class PostService implements IPostService {
         }
     }
 
-    private getDummyPosts(): Post[]{
-        return [
-            {
-                id: 1,
-                slug: "first-test-post",
-                content: "The content of the post would be here",
-                publishedDate: 1534662227088
-            },
-            {
-                id: 2,
-                slug: "second-test-post",
-                content: "The second test post also has content",
-                publishedDate: 1534662227999
-            },
-            {
-                id: 4,
-                slug: "another-test-post",
-                content: "Anther test post, after the others",
-                publishedDate: 1534662228001
-            }
-        ];
+    private mapToApiPost(post: Post): ApiPost {
+        if(!post){
+            return null;
+        }
+
+        return {
+            id: post.id,
+            slug: post.slug,
+            title: post.title,
+            content: post.content,
+            publishedDate: post.publishedDate,
+            tags: post.tags || []
+        }
     }
 }

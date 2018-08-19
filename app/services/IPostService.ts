@@ -1,7 +1,9 @@
-import Post from "../models/Post";
+import ApiPost from "../models/ApiPost";
+import ApiPostSet from "../models/ApiPostSet";
 
 export default interface IPostService{
-    allPosts(orderBy: string, firstPostId: number, postsPerPage: number): { posts: Post[], next: number };
-    postWithId(id: number): Post;
-    postWithSlug(slug: string): Post;
+    allPosts(orderBy: string, firstPostId: number, postsPerPage: number): ApiPostSet;
+    postWithId(id: number): ApiPost;
+    postWithSlug(slug: string): ApiPost;
+    postsWithTag(tag: string, orderBy: string, firstPostId: number, postsPerPage: number): ApiPostSet;
 }

@@ -1,9 +1,8 @@
-export default interface Post {
+export default interface ApiPost {
     id: number;
     slug: string;
     title: string;
     content: string;
     publishedDate: number;
-    published: boolean;
     tags: string[];
 }
