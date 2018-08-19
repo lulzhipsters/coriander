@@ -1,7 +1,7 @@
 import * as express from "express";
 import * as path from "path";
 
-import BlogRoutes from "./expressModules/BlogRoutes";
+import PostRoutes from "./expressModules/PostRoutes";
 import StaticContent from "./expressModules/StaticContent";
 
 import PostService from "./services/PostService";
@@ -16,7 +16,7 @@ const dataDirectory = path.isAbsolute(config.dataFolderPath)
 let app = express()
 
 // configure routes
-app.use("/blog", BlogRoutes.build(new PostService()))
+app.use("/posts", PostRoutes.build(new PostService()))
 
 // set up static content path
 app.use("/content", StaticContent.build(dataDirectory, config.staticContentPath))
