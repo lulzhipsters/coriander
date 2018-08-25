@@ -20,7 +20,6 @@ const postRepository = new PostRepository(dataDirectory);
 const postService = new PostService(postRepository);
 const tagService = new TagService(postRepository);
 
-
 ///////////////////
 // Start Express //
 ///////////////////
