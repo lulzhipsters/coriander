@@ -31,13 +31,13 @@ export default class PostRoutes {
                 const postId = parseInt(req.params.id);
 
                 if(isNaN(postId)){
-                    res.sendStatus(404);
+                    return res.sendStatus(404);
                 }
 
                 const post = postService.postWithId(postId);
 
                 if(!post){
-                    res.sendStatus(404);
+                    return res.sendStatus(404);
                 }
 
                 res.json(post);
@@ -49,7 +49,7 @@ export default class PostRoutes {
                 const post = postService.postWithSlug(postSlug);
 
                 if(!post){
-                    res.sendStatus(404);
+                    return res.sendStatus(404);
                 }
 
                 res.json(post);

@@ -25,6 +25,13 @@ const tagService = new TagService(postRepository);
 ///////////////////
 let app = express()
 
+// enable cors
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", config.corsAllowed);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 // configure routes
 app.use("/posts", PostRoutes.build(postService))
 app.use("/tags", TagRoutes.build(tagService));

@@ -10,6 +10,7 @@ interface WatchOptions {
 
 export default class GitWatcher {
     private _options: WatchOptions;
+    private _currentCommit: string = "";
 
     constructor(options: WatchOptions) {
         this._options = options;
@@ -17,7 +18,13 @@ export default class GitWatcher {
 
     async watch() {
         while(true){
+            let lastCommit = this._currentCommit;
+
             this.getLatest();
+
+            if(lastCommit !== this._currentCommit){
+                console.log(`Branch ${this._options.branch} currently at commit ${this._currentCommit}`)
+            }
 
             await this.delay(this._options.interval);
         }
@@ -34,10 +41,9 @@ export default class GitWatcher {
         });
 
         const commit = await repo.getReferenceCommit(`refs/remotes/origin/${this._options.branch}`);
+        this._currentCommit = commit.sha();
 
         await Reset.reset(repo, commit as any, Reset.TYPE.HARD, {});
-
-        console.log(`Branch ${this._options.branch} currently at commit ${commit.sha()}`)
     }
 
     private async delay(time: number){
