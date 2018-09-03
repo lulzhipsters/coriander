@@ -5,4 +5,5 @@ export default interface ApiPost {
     content: string;
     publishedDate: number;
     tags: string[];
+    banner: string;
 }

@@ -12,6 +12,7 @@ interface FrontMatterContent {
     title: string;
     publishedDate: number;
     tags?: string[];
+    banner: string;
 }
 
 export default class PostRepository {
@@ -44,6 +45,7 @@ export default class PostRepository {
                     publishedDate: attributes.publishedDate,
                     tags: attributes.tags || [],
                     content: fileContent.body,
+                    banner: attributes.banner
                 };
             }
         }

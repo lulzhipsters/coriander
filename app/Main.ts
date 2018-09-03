@@ -44,10 +44,12 @@ app.listen(config.listenPort, () => console.info("Coriander server started"))
 ////////////////////
 // Watch the repo //
 ////////////////////
-new GitWatcher({
-    repoPath: dataDirectory,
-    user: config.gitUser,
-    password: config.gitPassword,
-    branch: config.gitBranch,
-    interval: config.gitFetchInterval
-}).watch();
+if(config.gitWatchEnabled){
+    new GitWatcher({
+        repoPath: dataDirectory,
+        user: config.gitUser,
+        password: config.gitPassword,
+        branch: config.gitBranch,
+        interval: config.gitFetchInterval
+    }).watch();
+}

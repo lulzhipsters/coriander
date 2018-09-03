@@ -6,4 +6,5 @@ export default interface Post {
     publishedDate: number;
     published: boolean;
     tags: string[];
+    banner: string;
 }

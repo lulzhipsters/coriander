@@ -94,7 +94,8 @@ export default class PostService implements IPostService {
             title: post.title,
             content: post.content,
             publishedDate: post.publishedDate,
-            tags: post.tags || []
+            tags: post.tags || [],
+            banner: post.banner
         }
     }
 }
