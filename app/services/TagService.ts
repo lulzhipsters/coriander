@@ -11,7 +11,7 @@ export default class TagService implements ITagService {
     getAllTags(){
         const posts = Array.from(this._postRepository.posts())
             .map(p => p.tags)
-            .reduce((a, b) => a.concat(b)) // combine all the tags
+            .reduce((a, b) => a.concat(b), []) // combine all the tags
             .filter((text, index, array) => array.indexOf(text) === index) // make them unique
 
         return {

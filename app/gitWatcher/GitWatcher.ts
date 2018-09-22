@@ -18,8 +18,6 @@ export default class GitWatcher {
         this._options = options;
     }
 
-    
-
     async watch() {
         await this.initRepo();
 
