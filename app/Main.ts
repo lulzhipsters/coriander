@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as path from "path";
+import * as compression from "compression";
 
 import config from "./Config";
 
@@ -23,6 +24,9 @@ const tagService = new TagService(postRepository);
 // Start Express //
 ///////////////////
 let app = express()
+
+//enable compression
+app.use(compression());
 
 // enable cors
 app.use(function(req, res, next) {
