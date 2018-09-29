@@ -24,7 +24,7 @@ export default class GitWatcher {
         while(true){
             let lastCommit = this._currentCommit;
 
-            this.getLatest();
+            await this.getLatest();
 
             if(lastCommit !== this._currentCommit){
                 console.log(`Branch ${this._options.branch} currently at commit ${this._currentCommit}`)
@@ -80,7 +80,7 @@ export default class GitWatcher {
             }
         });
 
-        const commit = await repo.getBranchCommit(this._options.branch);
+        const commit = await repo.getReferenceCommit(`refs/remotes/origin/${this._options.branch}`);
         this._currentCommit = commit.sha();
 
         await Reset.reset(repo, commit as any, Reset.TYPE.HARD, {});
