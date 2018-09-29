@@ -1,5 +1,5 @@
 const config = {
-    listenPort: parseInt(process.env.HOST_PORT),
+    listenPort: parseInt(process.env.PORT),
 
     corsAllowed: process.env.HEADERS_CORSALLOWED,
 

@@ -80,7 +80,7 @@ export default class GitWatcher {
             }
         });
 
-        const commit = await repo.getReferenceCommit(`refs/remotes/origin/${this._options.branch}`);
+        const commit = await repo.getBranchCommit(this._options.branch);
         this._currentCommit = commit.sha();
 
         await Reset.reset(repo, commit as any, Reset.TYPE.HARD, {});
