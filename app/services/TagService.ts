@@ -9,13 +9,19 @@ export default class TagService implements ITagService {
     }
     
     getAllTags(){
-        const posts = Array.from(this._postRepository.posts())
+        const tags = Array.from(this._postRepository.posts())
             .map(p => p.tags)
             .reduce((a, b) => a.concat(b), []) // combine all the tags
-            .filter((text, index, array) => array.indexOf(text) === index) // make them unique
+
+        // make an uppercased copy, so we can remove duplicates ignoring case
+        const uppercased = tags.slice()
+            .map(t =>  t.toUpperCase());
+
+        const returnTags = tags
+            .filter((text, index, array) => uppercased.indexOf(text.toUpperCase()) === index) // make them unique
 
         return {
-            tags: posts
+            tags: returnTags
         };
     }
 }

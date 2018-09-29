@@ -1,4 +1,4 @@
 /node_modules/
-/app/config.ts
 /data/*
 /dist/*
+*.env

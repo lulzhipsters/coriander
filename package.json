@@ -2,10 +2,11 @@
   "name": "coriander",
   "version": "0.1.0",
   "description": "A simple blog and content service",
-  "main": "app/main.js",
+  "main": "dist/Main.js",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/Main.js"
   },
   "author": "Lewis Hopkins",
   "license": "MIT",
@@ -14,6 +15,9 @@
     "typescript": "2.7.2"
   },
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "front-matter": "^2.3.0",
+    "nodegit": "^0.22.2",
+    "wu": "^2.1.0"
   }
 }

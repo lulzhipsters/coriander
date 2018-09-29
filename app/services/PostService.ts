@@ -32,7 +32,7 @@ export default class PostService implements IPostService {
         const posts = this._postRepo.posts();
         
         const post = wu(posts)
-            .find(p => p.slug === slug);
+            .find(p => p.slug.toLowerCase() === slug.toLowerCase());
 
         return this.mapToApiPost(post);
     }
