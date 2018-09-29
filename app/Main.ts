@@ -4,7 +4,6 @@ import * as path from "path";
 import config from "./Config";
 
 import PostRoutes from "./expressModules/PostRoutes";
-import StaticContent from "./expressModules/StaticContent";
 
 import TagRoutes from "./expressModules/TagRoutes";
 import PostService from "./services/PostService";
@@ -36,8 +35,15 @@ app.use(function(req, res, next) {
 app.use("/posts", PostRoutes.build(postService))
 app.use("/tags", TagRoutes.build(tagService));
 
+const contentDir = path.join(dataDirectory, config.staticContentPath);
+
 // set up static content path
-app.use("/content", StaticContent.build(dataDirectory, config.staticContentPath))
+app.use("/content", express.static(contentDir))
+
+//serve up index.html from the content dir by default
+app.get("/", (req, res, next) => {
+    res.sendfile(path.join(contentDir, "index.html"));
+})
 
 app.listen(config.listenPort, () => console.info("Coriander server started"))
 
